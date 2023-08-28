@@ -43,3 +43,16 @@ t1(1) t1(2) t2(1) t2(2) t1(3) t2(3)
 
 3. Use Java ReentrantLock to ensure that the program outputs the expected sequence -|-|-|-|....
 Compile and run the improved program to see whether it works. Explain why your solution is correct, and why it is not possible for incorrect patterns, such as in the output above, to appear.
+
+Exercise 1.3
+1. To ensure that the program outputs the correct value, 15000, we added an if-statement in the run method, to check that the counter was less than the MAX_PEOPLE_COVID and locked from before the if-statement to after the increment of the counter, like this:
+
+public void run() {
+	  for (int i = 0; i < PEOPLE; i++) {
+		ourLock.lock();
+		if (counter < MAX_PEOPLE_COVID) counter++;
+		ourLock.unlock();
+	    }	    
+	}
+  
+  2. Our solution is correct because we made sure that only one thread at a time can check whether the if condition holds, and if so increment it - which ensures that the threads does not overwrite the shared memory. Since both the if-statement and the counter incrementing is within the critical section we made the lock around both statements. It always output 15.000 because only one thread can read/write ensuring that there is no race conditions. 
