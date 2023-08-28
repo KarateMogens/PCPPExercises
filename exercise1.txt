@@ -16,3 +16,8 @@ Explain how this could be. Is it guaranteed that the output is always 200?
 
 -- No, it does not make a difference to use any of the other forms. This is because updating a variable cannot be a fully atomic operation.
 
+4. Set the value of counts back to 10 million. Use Java ReentrantLock to ensure that the output of the program equals 20 million. Explain why your solution is correct, and why no other output is possible.
+Note: In your explanation, please use the concepts and vocabulary introduced during the lecture, e.g., critical sections, interleavings, race conditions, mutual exclusion, etc.
+Note II: The notes above applies to all exercises asking you to explain the correctness of your solution.
+
+-- Introducing the lock around the critical section of the increment method, ensures that each thread does not overwrite data in the shared memory, that the other thread is accessing. Thereby we ensure mutual exclusion of the two threads and therefore elimination of the race condition.
