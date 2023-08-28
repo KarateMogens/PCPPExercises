@@ -11,3 +11,8 @@ Explain how this could be. Is it guaranteed that the output is always 200?
 -- Since the runtime of each thread is so short, in most cases t1 will finish the complete execution of the for-loop, before t2 is even started. Therefore you don't have any data being overwritten. This is because the process of starting a new thread is a quite heavy operation in itself.
 
 - It is not guaranteed, that we will get an output of 200 each time. The first rerun executed with the output 188. 
+
+3. Do you think it would make any difference to use one of these forms instead? Why? Change the code and run it. Do you see any difference in the results for any of these alternatives?
+
+-- No, it does not make a difference to use any of the other forms. This is because updating a variable cannot be a fully atomic operation.
+
