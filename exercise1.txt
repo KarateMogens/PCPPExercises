@@ -1,4 +1,4 @@
-Exercise 1.1 - PCPP - Deadlock
+Exercise 1 - PCPP - Deadlock
 
 1. ThemainmethodcreatesaLongCounterobject.Thenitcreatesandstartstwothreadsthatrunconcurrently, and each increments the count field 10 million times by calling method increment.
 What output values do you get? Do you get the expected output, i.e., 20 million?
@@ -43,6 +43,8 @@ t1(1) t1(2) t2(1) t2(2) t1(3) t2(3)
 
 3. Use Java ReentrantLock to ensure that the program outputs the expected sequence -|-|-|-|....
 Compile and run the improved program to see whether it works. Explain why your solution is correct, and why it is not possible for incorrect patterns, such as in the output above, to appear.
+
+--
 
 Exercise 1.3
 1. To ensure that the program outputs the correct value, 15000, we added an if-statement in the run method, to check that the counter was less than the MAX_PEOPLE_COVID and locked from before the if-statement to after the increment of the counter, like this:
