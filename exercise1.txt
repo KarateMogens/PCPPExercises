@@ -25,3 +25,21 @@ Note II: The notes above applies to all exercises asking you to explain the corr
 5. By using the ReetrantLock in the exercise above, you have defined a critical section. Does your critical section contain the least number of lines of code? If so, explain why. If not, fix it and explain why your new critical section contains the least number of lines of code.
 
 -- It does, because the critical section in the code consists of the statement count = count +1, which accesses shared memory, and which cannot be divided into more atomic statements which aren't critical. 
+
+
+Exercise 1.2 Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
+  class Printer {
+    public void print() {
+      System.out.print("-"); //(1)
+      try { Thread.sleep(50); } catch (InterruptedException exn) { } //(2)
+      System.out.print("|"); //(3)
+  }
+}
+
+2. Describe and provide an interleaving where this happens.
+
+- With the numbering in the print method above and the two threads t1 and t2, such a possible interleaving could be:
+t1(1) t1(2) t2(1) t2(2) t1(3) t2(3)
+
+3. Use Java ReentrantLock to ensure that the program outputs the expected sequence -|-|-|-|....
+Compile and run the improved program to see whether it works. Explain why your solution is correct, and why it is not possible for incorrect patterns, such as in the output above, to appear.
