@@ -83,7 +83,10 @@ Interacting with a browser application on the computer.
 
 - Exploitation:
 Running a local-search algorithm in Introduction to Artificial Intelligence, where each thread starts a neighborhood.
+Writing a passwordmanager application, that is set to autoclose after 5 minutes of inactivity.
+A comptuationally expensive computer game, will often run on multiple cores for performance optimization.
 
-Hidden:
-- Virtual Machine manager (HyperVisor) such as VirtualBox or UTM to run multiple virtual machines.
-- Multi-tasking on a smartphone - i.e. having applications run simoultaneously.
+- Hidden:
+Virtual Machine manager (HyperVisor) such as VirtualBox or UTM to run multiple virtual machines.
+Multi-tasking on a smartphone - i.e. having applications run simoultaneously.
+Google Drive or any similar cloud storage solution. Here, a serverfarm handles many users' access to their data.
