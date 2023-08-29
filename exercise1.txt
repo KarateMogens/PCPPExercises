@@ -64,3 +64,26 @@ public void run() {
 2. Explain why your solution is correct, and why it always output 15000.
 
 - Our solution is correct because we made sure that only one thread at a time can check whether the if condition holds, and if so increment it - which ensures that the threads does not overwrite the shared memory. Since both the if-statement and the counter incrementing is within the critical section we made the lock around both statements. It always output 15.000 because only one thread can read/write ensuring that there is no race condition. 
+
+
+----------
+
+Exercise 1.4
+
+In Goetz chapter 1.1, three motivations for concurrency is given: resource utilization, fairness and convenience. In the note about concurrency there is an alternative characterization of the different motivations for concurrency (coined by the Norwegian computer scientist Kristen Nygaard):
+
+1. Compare the categories in the concurrency note and Goetz, try to find some examples of systems which are included in the categories of Goetz, but not in those in the concurrency note, and vice versa (if possible - if not possible, argue why).
+
+2. Find examples of 3 systems in each of the categories in the Concurrency note which you have used yourself (as a programmer or user).
+
+- Inherent:
+The MacOS operating system.
+Interacting with a mobile application like Google Maps.
+Interacting with a browser application on the computer.
+
+- Exploitation:
+Running a local-search algorithm in Introduction to Artificial Intelligence, where each thread starts a neighborhood.
+
+Hidden:
+- Virtual Machine manager (HyperVisor) such as VirtualBox or UTM to run multiple virtual machines.
+- Multi-tasking on a smartphone - i.e. having applications run simoultaneously.
