@@ -68,6 +68,11 @@ Does thread t always terminate in this case? Explain your answer.
 
 1. Execute the program several times. Show the results you get. Are there any race conditions?
 
+Results:
+ * Sum is 1145624,000000 and should be 2000000,000000
+ * Sum is 1399049,000000 and should be 2000000,000000
+ * Sum is 1230103,000000 and should be 2000000,000000
+
 - In its initial form, there exists a race condition on the static variable sum.
 
 2. Explain why race conditions appear when t1 and t2 use the Mystery object. Hint: Consider (a) what it means for an instance method to be synchronized, and (b) what it means for a static method to be synchronized.
