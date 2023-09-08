@@ -105,10 +105,11 @@ In Goetz chapter 1.1, three motivations for concurrency is given: resource utili
 Inherent (note) and Resource utilization (Goetz): 
 -- They both touch on the important aspect of being able to have multiple things running at the same time (fx maps and emails). Without this, a phone and computer would not be as useful, because we would have to wait for one thing to complete before being able to do the next. 
 
-- Exploitation and Hidden:
+- Exploitation (note) and Convenience (Goetz):
+-- The two categories are comparable, as they both focus on the ability to simultaniously run tasks, however exploitation is more concise about it being on a hardware level managing it. Whereas convenience wants the tasks to be distributed on the level of the programs. 
 
 - Hidden (note) and Fairness (Goetz):
-They both touches on the important aspect of being able to have multiple processes running, however the note focusses more on the underlying operating system than Goetz does.
+They both touches on the important aspect of being able to have multiple processes running, however hidden is more about on the underlying operating system than what Goetz is talking about.
 
 In conclusion, we have not been able to come up with any systems that one of the motivations covers and the other does not, because in our opinion they both talk about the same important aspect, but with different focuses. 
 
@@ -118,6 +119,7 @@ In conclusion, we have not been able to come up with any systems that one of the
 -Inherent:
 -- An example of a system handling these challenges is a webbrowser, where multiple tabs can run at the same time.
 -- Another one could be the operating systems(OS), which is handling a lot of processes at the sametime, without a timelack. 
+-- Text editor, the google docs and other simular systems makes it possible to read and write in real time. 
 
 - Exploitation:
 -- Running a local-search algorithm in Introduction to Artificial Intelligence, where each thread starts a neighborhood.
