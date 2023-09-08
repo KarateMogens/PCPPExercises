@@ -10,6 +10,8 @@
 
 - The new solution implements to counters related to readlocks; readAcquires and readReleases. These are respectively incremented and decremented on acquires and releases of readslocks. The method writeLock() is modified to have an initial while-loop based on the boolean value (writer). Essentially, this corresponds to the writer queue. When this loop is exited (a writer is picked from the queue) the writer-value is set to true, blocking new readAcquires. There is then a second while-loop that compares the number of readAcquires to the number of readReleases, essentially waiting for all current reads to unlock. Therefore, a writer picked from the write queue is guaranteed to get a lock, when the current readers are done.
 
+- Hypothetically, if an infinite amount writer threads are instantiated, a specific writer thread wt1, is not guaranteed to eventually write.
+
 public void writeLock() {
 
         synchronized(this) {
@@ -36,7 +38,7 @@ Consider the lecture’s example in file TestMutableInteger.java, which contains
 
 1. Execute the example as is. Do you observe the "main" thread’s write to mi.value remains invisible to the t thread, so that it loops forever? Independently of your observation, is it possible that the program loops forever? Explain your answer.
 
-- It is possible that the program will loop forever. This is because the value of mi in thread t, is not updated when the value of mi is set to 42 in the thread main, since at runtime these values are stored in the register or low-level caches of each core for performance reasons. To mitigate this, we have to flush the stored value to main memory, to have the two threads synchronize on the value of mi. 
+- It is possible that the program will loop forever. This is because the value of mi in thread t, is not updated when the value of mi is set to 42 in the thread main, since at runtime these values are stored in the register or low-level caches of each core for performance reasons. In other words, the changes made in the thread main, are not visible to the thread t. To mitigate this, we have to flush the stored value to shared memory, to have the two threads synchronize on the value of mi. 
 
 2. Use Java Intrinsic Locks (synchronized) on the methods of the MutableInteger to ensure that thread t always terminates. Explain why your solution prevents thread t from running forever.
 
