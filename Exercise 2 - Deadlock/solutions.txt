@@ -110,5 +110,7 @@ class Mystery {
 
 4. Note that the method sum() also uses an intrinsic lock. Is the use of this intrinsic lock on sum() necessary for this program? In other words, would there be race conditions if you remove the modifier synchronized from sum() (assuming that you have fixed the race conditions in 2.3.3)?
 
-- We need to maintain the synchronization on sum() to ensure that the value of sum is not being returned, as it is currently being updated by either addInstance() or addStatic(), regardless of having fixed the race condition between addInstance() and addStatic().
+- For the specific code in TestLocking0.java, we do not need to synchronize the method sum(), since it is being accessed only after both threads have finished execution.
+
+- However, for the MutableInteger class to be usable in general, we would need to maintain the synchronization on sum() to ensure that the value of sum is not being returned, as it is currently being updated by another thread calling either addInstance() or addStatic(), regardless of having fixed the race condition between addInstance() and addStatic().
 
