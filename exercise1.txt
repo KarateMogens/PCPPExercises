@@ -85,9 +85,11 @@ public void run() {
 	    }	    
 	}
 
+- See full code in CounterThreads2Covid.java
+
 2. Explain why your solution is correct, and why it always output 15000.
 
-- Our solution is correct because we made sure that only one thread at a time can check whether the if condition holds, and if so increment it - which ensures that the threads does not overwrite the shared memory. Since both the if-statement and the counter incrementing is within the critical section we made the lock around both statements. It always output 15.000 because only one thread can read/write ensuring that there is no race condition. 
+- Our solution is correct because we made sure that only one thread at a time can check whether the if condition holds, and if so increment it - which ensures that the threads does not overwrite the shared memory, or read from shared memory while it is being updated. Since both the if-statement and the counter incrementing is within the critical section we made the lock around both statements. It always output 15.000 because only one thread can read/write ensuring that there is no race condition. 
 
 
 ----------
@@ -98,22 +100,26 @@ In Goetz chapter 1.1, three motivations for concurrency is given: resource utili
 
 1. Compare the categories in the concurrency note and Goetz, try to find some examples of systems which are included in the categories of Goetz, but not in those in the concurrency note, and vice versa (if possible - if not possible, argue why).
 
-2. Find examples of 3 systems in each of the categories in the Concurrency note which you have used yourself (as a programmer or user).
-
-The note and Goetz's categories are comparable in their motivation for concurrency. The Goetz statements are less accurate in the detailing and up for interpretation, but overall they can be interpretted into the categories from the note. 
-
+-- The note and Goetz's categories are comparable in their motivation for concurrency. The Goetz statements are less accurate in the detailing and up for interpretation, but overall they can be interpretted into the categories from the note. 
 - Inherent and Resource utilization: 
-Both categories are speaking into the same challenges motivating for concurrency. 
-
-An example of a system handling these challenges is a webbrowser, where multiple tabs can run at the same time.
-Another one could be the operating systems(OS), which is handling a lot of processes at the sametime, without a timelack. 
+-- Both categories are speaking into the same challenges motivating for concurrency. 
 
 - Exploitation and Hidden:
-Running a local-search algorithm in Introduction to Artificial Intelligence, where each thread starts a neighborhood.
-Writing a passwordmanager application, that is set to autoclose after 5 minutes of inactivity.
-A comptuationally expensive computer game, will often run on multiple cores for performance optimization.
 
 - Hidden and fairness:
-Virtual Machine manager (HyperVisor) such as VirtualBox or UTM to run multiple virtual machines.
-Multi-tasking on a smartphone - i.e. having applications run simoultaneously.
-Google Drive or any similar cloud storage solution. Here, a serverfarm handles many users' access to their data.
+
+2. Find examples of 3 systems in each of the categories in the Concurrency note which you have used yourself (as a programmer or user).
+
+-Inherent:
+-- An example of a system handling these challenges is a webbrowser, where multiple tabs can run at the same time.
+-- Another one could be the operating systems(OS), which is handling a lot of processes at the sametime, without a timelack. 
+
+- Exploitation:
+-- Running a local-search algorithm in Introduction to Artificial Intelligence, where each thread starts a neighborhood.
+-- Writing a passwordmanager application, that is set to autoclose after 5 minutes of inactivity.
+-- A comptuationally expensive computer game, will often run on multiple cores for performance optimization.
+
+- Hidden:
+-- Virtual Machine manager (HyperVisor) such as VirtualBox or UTM to run multiple virtual machines.
+-- Multi-tasking on a smartphone - i.e. having applications run simoultaneously.
+-- Google Drive or any similar cloud storage solution. Here, a serverfarm handles many users' access to their data.
