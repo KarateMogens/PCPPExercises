@@ -6,7 +6,7 @@ Exercises 1.1
 1. ThemainmethodcreatesaLongCounterobject.Thenitcreatesandstartstwothreadsthatrunconcurrently, and each increments the count field 10 million times by calling method increment.
 What output values do you get? Do you get the expected output, i.e., 20 million?
 
--- When running the programme, we get different outputs each time the programme is run, all being under 20 million. 
+-- When running the program, we get different outputs each time the program is run, all being under 20 million. 
 
 2. Reduce the counts value from 10 million to 100, recompile, and rerun the code. It is now likely that you get the expected result (200) in every run.
 Explain how this could be. Is it guaranteed that the output is always 200?
@@ -107,6 +107,15 @@ In Goetz chapter 1.1, three motivations for concurrency is given: resource utili
 - Exploitation and Hidden:
 
 - Hidden and fairness:
+
+Both motivations for concurrency focus on important elements of running concurrent. In our opinion the note has a more hardware focused approach, where Goetz is a bit more open and up to interpretation. However, we see some similarities between the two. 
+
+First and foremost, resource utilization (Goetz) and inherent (note) both touch on the important aspect of being able to have multiple things running at the same time (fx maps and emails). Without this, a phone and computer would not be as useful, because we would have to wait for one thing to complete before being able to do the next. 
+
+Second, fairness (Goetz) and hidden (note) also have some similarities, because they both touches on the important aspect of being able to have multiple processes running, however the note focusses more on the underlying operating system than Goetz does. 
+
+In conclusion, we have not been able to come up with any systems that one of the motivations covers and the other does not, because in our opinion they both talk about the same important aspect, but with different focuses. 
+
 
 2. Find examples of 3 systems in each of the categories in the Concurrency note which you have used yourself (as a programmer or user).
 
