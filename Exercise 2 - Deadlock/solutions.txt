@@ -2,10 +2,7 @@
 
 1. Use Java Intrinsic Locks (i.e., synchronized) to implement a monitor ensuring that the access to the shared resource by reader and writer threads is according to the specification above. You may use the code in the lectures and Chapter 8 of Herlihy as inspiration, but do not feel obliged copy that structure.
 
-
 - See code: SynchronizedMonitor.java
-
-
 
 2. Is your solution fair towards writer threads? In other words, does your solution ensure that if a writer thread wants to write, then it will eventually do so? If so, explain why. If not, modify part 1. so that your implementation satisfies this fairness requirement, and then explain why your new solution satisfies the requirement.
 
@@ -36,7 +33,6 @@ public void writeLock() {
 ---------- Exercise 2.2 ----------
 
 Consider the lecture’s example in file TestMutableInteger.java, which contains this def- inition of class MutableInteger.
-
 
 1. Execute the example as is. Do you observe the "main" thread’s write to mi.value remains invisible to the t thread, so that it loops forever? Independently of your observation, is it possible that the program loops forever? Explain your answer.
 
