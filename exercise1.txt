@@ -100,17 +100,15 @@ In Goetz chapter 1.1, three motivations for concurrency is given: resource utili
 
 1. Compare the categories in the concurrency note and Goetz, try to find some examples of systems which are included in the categories of Goetz, but not in those in the concurrency note, and vice versa (if possible - if not possible, argue why).
 
--- The note and Goetz's categories are comparable in their motivation for concurrency. The Goetz statements are less accurate in the detailing and up for interpretation, but overall they can be interpretted into the categories from the note. 
-- Inherent and Resource utilization: 
--- Both categories are speaking into the same challenges motivating for concurrency. 
+-- The note and Goetz's categories are comparable in their motivation for concurrency. The Goetz statements are less accurate in the detailing and up for interpretation, but overall they can be interpretted into the categories from the note. Both categories are speaking into the same challenges motivating for concurrency. Below we will specify how the note and Goetz are comparable, but also how they differ.
+
+Inherent (note) and Resource utilization (Goetz): 
+-- They both touch on the important aspect of being able to have multiple things running at the same time (fx maps and emails). Without this, a phone and computer would not be as useful, because we would have to wait for one thing to complete before being able to do the next. 
 
 - Exploitation and Hidden:
 
-- Hidden and fairness:
-
-First and foremost, resource utilization (Goetz) and inherent (note) both touch on the important aspect of being able to have multiple things running at the same time (fx maps and emails). Without this, a phone and computer would not be as useful, because we would have to wait for one thing to complete before being able to do the next. 
-
-Second, fairness (Goetz) and hidden (note) also have some similarities, because they both touches on the important aspect of being able to have multiple processes running, however the note focusses more on the underlying operating system than Goetz does. 
+- Hidden (note) and Fairness (Goetz):
+They both touches on the important aspect of being able to have multiple processes running, however the note focusses more on the underlying operating system than Goetz does.
 
 In conclusion, we have not been able to come up with any systems that one of the motivations covers and the other does not, because in our opinion they both talk about the same important aspect, but with different focuses. 
 
