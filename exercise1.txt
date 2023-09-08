@@ -1,5 +1,8 @@
 Exercise 1 - PCPP - Deadlock
 
+----------
+Exercises 1.1
+
 1. ThemainmethodcreatesaLongCounterobject.Thenitcreatesandstartstwothreadsthatrunconcurrently, and each increments the count field 10 million times by calling method increment.
 What output values do you get? Do you get the expected output, i.e., 20 million?
 
@@ -45,7 +48,7 @@ You will observe that, most of the time, your program print the dash and bar sym
     
 - See code: PrinterExercise.java
 
-Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
+2. Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
   class Printer {
     public void print() {
       System.out.print("-"); 							//(1)
@@ -54,13 +57,17 @@ Consider this class, whose print method prints a dash “-”, waits for 50 mill
   }
 }
 
-2. Describe and provide an interleaving where this happens.
+Describe and provide an interleaving where this happens.
 
 - With the numbering in the print method above and the two threads t1 and t2, such a possible interleaving could be:
 t1(1) t1(2) t2(1) t2(2) t1(3) t2(3)
 
 3. Use Java ReentrantLock to ensure that the program outputs the expected sequence -|-|-|-|....
 Compile and run the improved program to see whether it works. Explain why your solution is correct, and why it is not possible for incorrect patterns, such as in the output above, to appear.
+
+- See code: PrinterExerciseLock.java
+
+- By using a lock around the critical section of the method print(), we ensure that there is no race condition between the two threads to print "-|", thus ensuring a perfect pattern. 
 
 ----------
 
