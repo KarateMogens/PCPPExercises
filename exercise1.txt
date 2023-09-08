@@ -108,8 +108,6 @@ In Goetz chapter 1.1, three motivations for concurrency is given: resource utili
 
 - Hidden and fairness:
 
-Both motivations for concurrency focus on important elements of running concurrent. In our opinion the note has a more hardware focused approach, where Goetz is a bit more open and up to interpretation. However, we see some similarities between the two. 
-
 First and foremost, resource utilization (Goetz) and inherent (note) both touch on the important aspect of being able to have multiple things running at the same time (fx maps and emails). Without this, a phone and computer would not be as useful, because we would have to wait for one thing to complete before being able to do the next. 
 
 Second, fairness (Goetz) and hidden (note) also have some similarities, because they both touches on the important aspect of being able to have multiple processes running, however the note focusses more on the underlying operating system than Goetz does. 
