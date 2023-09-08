@@ -14,7 +14,7 @@ Explain how this could be. Is it guaranteed that the output is always 200?
 
 3. Do you think it would make any difference to use one of these forms instead? Why? Change the code and run it. Do you see any difference in the results for any of these alternatives?
 
--- No, it does not make a difference to use any of the other forms. This is because updating a variable cannot be a fully atomic operation.
+- No, it does not make a difference to use any of the other forms. This is because updating a variable cannot be a fully atomic operation.
 
 4. Set the value of counts back to 10 million. Use Java ReentrantLock to ensure that the output of the program equals 20 million. Explain why your solution is correct, and why no other output is possible.
 Note: In your explanation, please use the concepts and vocabulary introduced during the lecture, e.g., critical sections, interleavings, race conditions, mutual exclusion, etc.
@@ -31,9 +31,9 @@ Note II: The notes above applies to all exercises asking you to explain the corr
 Exercise 1.2 Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
   class Printer {
     public void print() {
-      System.out.print("-"); //(1)
-      try { Thread.sleep(50); } catch (InterruptedException exn) { } //(2)
-      System.out.print("|"); //(3)
+      System.out.print("-"); 							//(1)
+      try { Thread.sleep(50); } catch (InterruptedException exn) { } 		//(2)
+      System.out.print("|"); 							//(3)
   }
 }
 
