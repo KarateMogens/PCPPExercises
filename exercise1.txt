@@ -23,11 +23,13 @@ Explain how this could be. Is it guaranteed that the output is always 200?
 Note: In your explanation, please use the concepts and vocabulary introduced during the lecture, e.g., critical sections, interleavings, race conditions, mutual exclusion, etc.
 Note II: The notes above applies to all exercises asking you to explain the correctness of your solution.
 
--- Introducing the lock around the critical section of the increment method, ensures that each thread does not overwrite data in the shared memory, that the other thread is accessing. Thereby we ensure mutual exclusion of the two threads and therefore elimination of the race condition.
+- See code: TestLongCounterExperiments.java
+
+- Introducing the lock around the critical section of the increment method, ensures that each thread does not overwrite data in the shared memory, that the other thread is accessing. Thereby we ensure mutual exclusion of the two threads and therefore elimination of the race condition.
 
 5. By using the ReetrantLock in the exercise above, you have defined a critical section. Does your critical section contain the least number of lines of code? If so, explain why. If not, fix it and explain why your new critical section contains the least number of lines of code.
 
--- It does, because the critical section in the code consists of the statement count = count +1, which accesses shared memory, and which cannot be divided into more atomic statements which aren't critical. 
+- It does, because the critical section in the code consists of the statement count = count +1, which accesses shared memory, and which cannot be divided into more atomic statements which aren't critical. 
 
 ----------
 Exercise 1.2
