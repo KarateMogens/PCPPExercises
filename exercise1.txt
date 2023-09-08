@@ -27,8 +27,25 @@ Note II: The notes above applies to all exercises asking you to explain the corr
 -- It does, because the critical section in the code consists of the statement count = count +1, which accesses shared memory, and which cannot be divided into more atomic statements which aren't critical. 
 
 ----------
+Exercise 1.2
 
-Exercise 1.2 Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
+
+1. Write a program that creates a Printer object p, and then creates and starts two threads. Each thread must call p.print() forever. Note: You can easily run your program using the gradle project for the exercises by placing your code in the directory week01exercises/app/src/main/java/exercises01/ (remembertoaddpackage exercises01;asthefirstlineofyourJavafiles).
+You will observe that, most of the time, your program print the dash and bar symbols alternate neatly as in -|-|-|-|-|-|-|. But occasionally two bars are printed in a row, or two dashes are printed in a row, creating small “weaving faults” like those shown below:
+    -|-|-|-||--|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-||--|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-||--|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    
+    
+- See code: PrinterExercise.java
+
+Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
   class Printer {
     public void print() {
       System.out.print("-"); 							//(1)
