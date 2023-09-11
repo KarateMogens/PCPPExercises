@@ -1,0 +1,134 @@
+Exercise 1 - PCPP - Deadlock
+
+----------
+Exercises 1.1
+
+1. ThemainmethodcreatesaLongCounterobject.Thenitcreatesandstartstwothreadsthatrunconcurrently, and each increments the count field 10 million times by calling method increment.
+What output values do you get? Do you get the expected output, i.e., 20 million?
+
+-- When running the program, we get different outputs each time the program is run, all being under 20 million. 
+
+2. Reduce the counts value from 10 million to 100, recompile, and rerun the code. It is now likely that you get the expected result (200) in every run.
+Explain how this could be. Is it guaranteed that the output is always 200?
+
+-- Since the runtime of each thread is so short, in most cases t1 will finish the complete execution of the for-loop, before t2 is even started. Therefore you don't have any data being overwritten. This is because the process of starting a new thread is a quite heavy operation in itself.
+
+- It is not guaranteed, that we will get an output of 200 each time. The first rerun executed with the output 188. 
+
+3. Do you think it would make any difference to use one of these forms instead? Why? Change the code and run it. Do you see any difference in the results for any of these alternatives?
+
+- No, it does not make a difference to use any of the other forms. This is because updating a variable cannot be a fully atomic operation.
+
+4. Set the value of counts back to 10 million. Use Java ReentrantLock to ensure that the output of the program equals 20 million. Explain why your solution is correct, and why no other output is possible.
+Note: In your explanation, please use the concepts and vocabulary introduced during the lecture, e.g., critical sections, interleavings, race conditions, mutual exclusion, etc.
+Note II: The notes above applies to all exercises asking you to explain the correctness of your solution.
+
+- See code: TestLongCounterExperiments.java
+
+- Introducing the lock around the critical section of the increment method, ensures that each thread does not overwrite data in the shared memory, that the other thread is accessing. Thereby we ensure mutual exclusion of the two threads and therefore elimination of the race condition.
+
+5. By using the ReetrantLock in the exercise above, you have defined a critical section. Does your critical section contain the least number of lines of code? If so, explain why. If not, fix it and explain why your new critical section contains the least number of lines of code.
+
+- It does, because the critical section in the code consists of the statement count = count +1, which accesses shared memory, and which cannot be divided into more atomic statements which aren't critical. 
+
+----------
+Exercise 1.2
+
+
+1. Write a program that creates a Printer object p, and then creates and starts two threads. Each thread must call p.print() forever. Note: You can easily run your program using the gradle project for the exercises by placing your code in the directory week01exercises/app/src/main/java/exercises01/ (remembertoaddpackage exercises01;asthefirstlineofyourJavafiles).
+You will observe that, most of the time, your program print the dash and bar symbols alternate neatly as in -|-|-|-|-|-|-|. But occasionally two bars are printed in a row, or two dashes are printed in a row, creating small “weaving faults” like those shown below:
+    -|-|-|-||--|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-||--|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-||--|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+    
+    
+- See code: PrinterExercise.java
+
+2. Consider this class, whose print method prints a dash “-”, waits for 50 milliseconds, and then prints a vertical bar “|”:
+  class Printer {
+    public void print() {
+      System.out.print("-"); 							//(1)
+      try { Thread.sleep(50); } catch (InterruptedException exn) { } 		//(2)
+      System.out.print("|"); 							//(3)
+  }
+}
+
+Describe and provide an interleaving where this happens.
+
+- With the numbering in the print method above and the two threads t1 and t2, such a possible interleaving could be:
+t1(1) t1(2) t2(1) t2(2) t1(3) t2(3)
+
+3. Use Java ReentrantLock to ensure that the program outputs the expected sequence -|-|-|-|....
+Compile and run the improved program to see whether it works. Explain why your solution is correct, and why it is not possible for incorrect patterns, such as in the output above, to appear.
+
+- See code: PrinterExerciseLock.java
+
+- By using a lock around the critical section of the method print(), we ensure that there is no race condition between the two threads to print "-|", thus ensuring a perfect pattern. 
+
+----------
+
+Exercise 1.3
+
+1. Modify the behaviour of the Turnstile thread class so that that exactly 15000 enter the park; no less no more. To this end, simply add a check before incrementing counter to make sure that there are less than 15000 people in the park. Note that the class does not use any type of locks. You must use ReentrantLock to ensure that the program outputs the correct value, 15000.
+
+- To ensure that the program outputs the correct value, 15000, we added an if-statement in the run method, to check that the counter was less than the MAX_PEOPLE_COVID and locked from before the if-statement to after the increment of the counter, like this:
+
+public void run() {
+	  for (int i = 0; i < PEOPLE; i++) {
+		ourLock.lock();
+		if (counter < MAX_PEOPLE_COVID) counter++;
+		ourLock.unlock();
+	    }	    
+	}
+
+- See full code in CounterThreads2Covid.java
+
+2. Explain why your solution is correct, and why it always output 15000.
+
+- Our solution is correct because we made sure that only one thread at a time can check whether the if condition holds, and if so increment it - which ensures that the threads does not overwrite the shared memory, or read from shared memory while it is being updated. Since both the if-statement and the counter incrementing is within the critical section we made the lock around both statements. It always output 15.000 because only one thread can read/write ensuring that there is no race condition. 
+
+
+----------
+
+Exercise 1.4
+
+In Goetz chapter 1.1, three motivations for concurrency is given: resource utilization, fairness and convenience. In the note about concurrency there is an alternative characterization of the different motivations for concurrency (coined by the Norwegian computer scientist Kristen Nygaard):
+
+1. Compare the categories in the concurrency note and Goetz, try to find some examples of systems which are included in the categories of Goetz, but not in those in the concurrency note, and vice versa (if possible - if not possible, argue why).
+
+-- The note and Goetz's categories are comparable in their motivation for concurrency. The Goetz statements are less accurate in the detailing and up for interpretation, but overall they can be interpretted into the categories from the note. Both categories are speaking into the same challenges motivating for concurrency. Below we will specify how the note and Goetz are comparable, but also how they differ.
+
+Inherent (note) and Resource utilization (Goetz): 
+-- They both touch on the important aspect of being able to have multiple things running at the same time (fx maps and emails). Without this, a phone and computer would not be as useful, because we would have to wait for one thing to complete before being able to do the next. 
+
+- Exploitation (note) and Convenience (Goetz):
+-- The two categories are comparable, as they both focus on the ability to simultaniously run tasks, however exploitation is more concise about it being on a hardware level managing it. Whereas convenience wants the tasks to be distributed on the level of the programs. 
+
+- Hidden (note) and Fairness (Goetz):
+They both touches on the important aspect of being able to have multiple processes running, however hidden is more about on the underlying operating system than what Goetz is talking about.
+
+In conclusion, we have not been able to come up with any systems that one of the motivations covers and the other does not, because in our opinion they both talk about the same important aspect, but with different focuses. 
+
+
+2. Find examples of 3 systems in each of the categories in the Concurrency note which you have used yourself (as a programmer or user).
+
+-Inherent:
+-- An example of a system handling these challenges is a webbrowser, where multiple tabs can run at the same time.
+-- Another one could be the operating systems(OS), which is handling a lot of processes at the sametime, without a timelack. 
+-- Text editor, the google docs and other simular systems makes it possible to read and write in real time. 
+
+- Exploitation:
+-- Running a local-search algorithm in Introduction to Artificial Intelligence, where each thread starts a neighborhood.
+-- Writing a passwordmanager application, that is set to autoclose after 5 minutes of inactivity.
+-- A comptuationally expensive computer game, will often run on multiple cores for performance optimization.
+
+- Hidden:
+-- Virtual Machine manager (HyperVisor) such as VirtualBox or UTM to run multiple virtual machines.
+-- Multi-tasking on a smartphone - i.e. having applications run simoultaneously.
+-- Google Drive or any similar cloud storage solution. Here, a serverfarm handles many users' access to their data.
