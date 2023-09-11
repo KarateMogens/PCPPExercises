@@ -33,8 +33,8 @@ java {
 }
 
 application {
-    // Define the main class for the application.
-    mainClass = 'exercise3.App'
+    if (project.hasProperty("mainClass"))
+	    mainClass.set(project.getProperty("mainClass"))
 }
 
 tasks.named('test') {
