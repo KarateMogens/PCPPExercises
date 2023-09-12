@@ -1,4 +1,4 @@
-package exercises03;
+package exercise3;
 
 public class Person {
 
@@ -9,18 +9,28 @@ public class Person {
     private static long counter;
 
     public Person() {
-        this.id = counter;
-        counter++;
+        synchronized (Person.class) {
+            this.id = counter;
+            try {
+                System.out.println("Thread " + Thread.currentThread().threadId()  + " Created a person with id: " + this.id);
+                Thread.sleep(50);
+                counter++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Person(long id) {
-        if (counter == 0) {
-            counter = id;
-            counter++;
-            this.id = id;
-        } else {
-            this.id = counter;
-            counter++;
+        synchronized (Person.class) {   
+            if (counter == 0) {
+                counter = id;
+                counter++;
+                this.id = id;
+            } else {
+                this.id = counter;
+                counter++;
+            }
         }
     }
 
@@ -50,17 +60,16 @@ public class Person {
     }
 
     public static void main(String[] args) {
+        new Person(7);
         Thread t1 = new Thread(() -> {
-            for (int i = 77; i < 77+20; i++) {
-                Person p = new Person();
-                System.out.println("T1 is printing: the Id is " + p.getId());
+            for (int i = 0; i < 1000; i++) {
+                new Person();
             }
         });
         t1.start();
         Thread t2 = new Thread(() -> {
-            for (int i = 0; i < 20; i++) {
-                Person p = new Person();
-                System.out.println("T2 is printing: the ID is " + p.getId());
+            for (int i = 0; i < 1000; i++) {
+                new Person();
             }
         });
         t2.start();
