@@ -3,7 +3,7 @@ Exercise 1 - PCPP - Deadlock
 ----------
 Exercises 1.1
 
-1. ThemainmethodcreatesaLongCounterobject.Thenitcreatesandstartstwothreadsthatrunconcurrently, and each increments the count field 10 million times by calling method increment.
+1. The main method creates a LongCounter object. Then it creates and starts two threads that run concurrently, and each increments the count field 10 million times by calling method increment.
 What output values do you get? Do you get the expected output, i.e., 20 million?
 
 -- When running the program, we get different outputs each time the program is run, all being under 20 million. 
