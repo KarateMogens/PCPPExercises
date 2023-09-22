@@ -9,9 +9,9 @@ i.e., Java Lock or intrinsic locks (synchronized) cannot be used.
 
 - The Thread-safe Class Definition is:
 
-"A class is said to be thread-safe iff. no concurrent execution of method calls or field accesses (read/write) result in data races on the fields of the class"
+- "A class is said to be thread-safe iff. no concurrent execution of method calls or field accesses (read/write) result in data races on the fields of the class"
 
-We will analyze the following five aspects to argue that our BoundedBuffer implementation is a thread-safe class:
+- We will analyze the following five aspects to argue that our BoundedBuffer implementation is a thread-safe class:
 
 - Class State
 -- Our BoundedBuffer has class fields, meaning that we cannot assume thread safety and must make use of our other tools to make the class thread-safe.
@@ -21,18 +21,20 @@ We will analyze the following five aspects to argue that our BoundedBuffer imple
 -- A method that could potentially cause escaping is the take() method. Here BoundedBuffer returns a reference to a generic object T. However, since we only return a reference to an object removed from the LinkedList contained in the class state and not the LinkedList itself, we don't have any escaping objects.
 
 - Safe Publication
--- Safe Publication is ensured in BoundBuffer by declaring all fields (which only contain complex objects) as final. This ensures a happens-before relation between the initialization of the field and any other actions of the program using the class. Thus, BoundedBuffer is only published after full initialization is completed.
+-- Safe Publication is ensured in BoundBuffer by declaring all fields (which only contain complex objects) as final. This ensures a happens-before relation between the initialization of the field and any other actions of the program using the object. Thus, BoundedBuffer is only published after full initialization is completed.
 
 - Immutability
--- Since BoundedBuffer makes use of complex objects in its fields and has methods to change the contents of these fields, we cannot guarantee thread-safety through immutability. Instead we must ensure mutual exclusion on the (indirect) access to these fields.
+-- Since BoundedBuffer makes use of complex objects in its fields and has methods to change the contents of these fields, we cannot guarantee thread-safety through immutability (i.e final). Instead we must ensure mutual exclusion on the (indirect) access to these fields.
 
 - Mutual Exclusion
--- Mutual exclusion in the methods that read/write from the class state is ensured using a semaphore of capacity 1 as a pseudolock. This semaphore ensures that the critical section of take() and insert() can only be accessed by one thread at a time, ensuring that we don't have a data race on our LinkedList.
+-- Mutual exclusion in the methods that read/write from the class state is ensured using a semaphore of capacity 1 as a lock. This semaphore ensures that the critical section of take() and insert() can only be accessed by one thread at a time, ensuring that we don't have a data race on our LinkedList.
+
+- With all these points ensured, we can conclude that our class is thread-safe.
 
 
 3. Is it possible to implement BoundedBuffer<T> using Barriers? Explain your answer.
 
-- It is not possible to implement BoundedBuffer<T> using Barrier or CyclicBarrier, if no other synchronization methods are allowed. This is due to the simply fact that Barriers cannot be used to ensure mutual exclusivity in the method calls take() and insert(). Therefore, we will have a datarace on the LinkedList object.
+- It is not possible to implement BoundedBuffer<T> using Barrier or CyclicBarrier, if no other synchronization methods are allowed. This is due to the fact that Barriers cannot be used to ensure mutual exclusivity in the method calls take() and insert(). Therefore, we will have a datarace on the LinkedList object.
 
 - See code: BarrierTest.java for an example of CyclicBarrier failing to ensure mutual exclusivity.
 
@@ -45,9 +47,10 @@ Exercise 3.2 -----------
 2. Explain why your implementation of the Person constructor is thread-safe, and why subsequent accesses to a created object will never refer to partially created objects.
 
 - The constructor of Person.java is thread-safe because we utilize the intrinsic class lock, to make sure that only a single instance is created at a time, thus ensuring no data-race on the static field counter, which the constructor both reads from and writes to.
+
 - Since we apply the final keyword to the field id, we ensure that id is instantiated before object publication. Since the object is initialized using default values for the fields name, zip and address, we also establish a happens-before relation on the initialization of these simple types and any other actions of the program.
 
-3. Implement a main thread that starting several threads the create and use instances of the Person class.
+3. Implement a main thread that starts several threads that create and use instances of the Person class.
 
 - See code: Person.java
 
