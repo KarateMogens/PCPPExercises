@@ -1,0 +1,109 @@
+---------- Exercise 4.1 -----------
+
+1. Implement a functional correctness test that finds concurrency errors in the add(Integer element) method in ConcurrentIntegerSetBuggy. Describe the interleaving that your test finds.
+
+Note I: Remember that, by definition, sets do not have repeated elements. In fact, if, in a sequential test, you try to insert twice the same element, you will notice that the second insertion will no suceed and add will return false.
+
+Note II: Remember that the execution of the add() method in HashSet is not atomic.
+
+Hint I: Even if many threads try to add the same number, the size of the set must be at most 1. Think of an assertion related to the size of the set that would occur if the same element is added more than once.
+
+- We are using the fact that the method add(Integer element) for the HashSet that ConcurrentSet uses, is not atomic, but consists of many operations. We can imagine that it will first check if the element is contained in the set, then depending on this check add the element.
+
+- If the add() method consists of the following operations:
+
+	add():
+		if element not in set:		//1
+			add element to set		//2
+			increment size		//3
+
+- Therefore, if you have two threads adding the same element, we can have the following interleaving, that adds the element to the set twice:
+
+	t1(1) t2(1) t1(2) t2(2) t1(3) t2(3)
+
+- For test-implementation, see ConcurrentSetTest.java - testAddConcurrentIntergerSet()
+
+- Run with: 'gradle cleanTest test --tests exercises04.ConcurrentSetTest'
+
+
+2. Implement a functional correctness test that finds concurrency errors in the remove(Integer element) method in ConcurrentIntegerSetBuggy. Describe the interleaving that your test finds.
+
+Note: Remember that the execution of the remove() method in HashSet is not atomic.
+
+Hint: The method size() may return values smaller 0 when executed concurrently. This fact should useful in thinking of an assertion related to the size of the set that would occur if an element is removed more than once.
+
+- We are again using the fact that the remove() method of the HashSet in ConcurrentSetBuggy is not atomic. We can imagine that it is impklemented in the following way:
+
+	remove():
+		if element in set:			//1
+			remove element from set	//2
+			decrement size		//3
+
+- We can therefore have the following interleaving that results in the field size, being decremented twice for removing a single element, with the following interleaving:
+
+	t1(1) t2(1) t1(2) t2(2) t1(3) t2(3)
+
+- In our test, we initialise the Set to contain N elements. Then we create an arbitrary number of threads, that each iterate from 0 to N, removing each element. We can then assert if the size of the set is decremented past 0, when it should be 0.
+
+- For test-implementation, see ConcurrentSetTest.java -testRemoveConcurrentIntegerSet()
+
+- Run with: 'gradle cleanTest test --tests exercises04.ConcurrentSetTest'
+
+3. In the class ConcurrentIntegerSetSync, implement fixes to the errors you found in the previous exercises. Run the tests again to increase your confidence that your updates fixed the problems. In addition, explain why your solution fixes the problems discovered by your tests.
+
+- See code: ConcurrentIntegerSet.java - class ConcurrentIntegerSetSync
+
+- Our solution fixes the problems discovered by our tests, because it ensures mutual exclusion around the critical sections. These critical sections are the entire content of both the add() and remove() methods. By ensuring mutual exclusion, we remove the race condition on the internal fields of the underlying HashSet.
+
+4. Run your tests on the ConcurrentIntegerSetLibrary. Discuss the results.
+
+
+- All the tests pass.
+ 
+- The class ConcurrentIntegerSetLibrary, uses the ConcurrentSkipListSet as its underlying set, that is part of the java concurrent built-in library. Therefore, the mutual exclusion is ensured at a "deeper" level, than in the class ConcurrentIntegerSetSync. 
+
+
+5. Does a failure on your tests above prove that the tested collection is not thread-safe? Explain your answer.
+
+- Yes! If we can provoke an error in our class that is due to the class not being thread-safe, we have found a counter-example that demonstrates that the class is not thread-safe.
+
+6. Does passing your tests above prove that the tested collection is thread-safe (when only using add() and remove())? Explain your answer.
+
+- No! We can only prove the presence of bugs through testing, never their absence. For that we need formal verification.
+
+
+
+----------- Exercise 4.2 ---------- 
+
+1. Let capacity denote the final field capacity in SemaphoreImp. Then, the property above does not hold for SemaphoreImp. Your task is to provide an interleaving showing a counterexample of the property, and explain why the interleaving violates the property.
+
+Note: If a thread successfully acquires the semaphore—i.e., it executes acquire() and does not block— then we consider that it has entered its critical section.
+
+Hint I: Consider only interleavings that involve method calls to acquire() and release(). Note that field accesses cannot occur in interleavings because all fields are defined as private.
+
+Hint II: The operations executed by the main test thread—i.e., the thread that starts the threads for testing— are also part of interleavings. You may use the main thread to execute method calls in the tested semaphore before starting the threads that try to enter the critical section.
+
+	
+	mySem = new Semaphore(2)	//1
+	mySem.acquire()		//2
+	mySem.release()		//3
+
+
+	main(1) main(3) t1(2) t2(2) t3(2)
+
+- Because main(3) decreases the internal field state to -1, allowing for three new acquires. This means that three other threads can call mySem.acquire() without being blocked, thus violating the initial capacity of 2.
+	
+2. Write a functional correctness test that can trigger the interleaving you describe in 1. Explain why your test triggers the interlaving.
+
+Note: The note and hints in 1 also apply to this exercise.
+
+- The test triggers the interleaving described above. The semaphore is initialized to capacity N. 
+
+- The main thread then calls release() a single time on the semaphore, before starting up noThreads many threads, where N < noThreads. Each thread tries to execute acquire() on the semaphore, followed by an increment to the AtomicInteger count. This increment can only be triggered if acquire if the semaphore 'permits' the acquire(). 
+
+- If semaphore functions according to the specification, only N many threads succesfully increment count. However, if the semaphore is incorrectly implemented, at least N + 1 many threads can increment count.
+
+- See code: SemaphoreImpTest.java - testRelease()
+
+- Run with 'gradle cleanTest test --tests exercises04.SemaphoreImpTest'
+
