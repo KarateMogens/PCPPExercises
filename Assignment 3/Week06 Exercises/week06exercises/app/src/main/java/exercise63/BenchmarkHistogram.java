@@ -15,16 +15,15 @@ public class BenchmarkHistogram {
 
     public BenchmarkHistogram() {
 
-        final int range = 4_999_999;
+        final int range = 5_000_000;
         final int span = 25;
-       
-        for (int c = 1; c <= 32; c++) {
-			final int threadCount = c;
+        final int threadCount = 10;
+        for (int c = 1; c <= 32; c++) {	
             final int locks = c;
-            Histogram normalHistogram = new Histogram2(span);
+            //Histogram normalHistogram = new Histogram2(span);
             Histogram stripHistogram = new Histogram3(span, locks);
-            Benchmark.Mark7(String.format("countPrimeFactor %2d", threadCount), i -> countPrimeFactors(normalHistogram, threadCount, range));
-            Benchmark.Mark7(String.format("countPrimeFactorStripe %2d", threadCount), i -> countPrimeFactorsStrip(stripHistogram, threadCount, range));
+            //Benchmark.Mark7(String.format("countPrimeFactor %2d", threadCount), i -> countPrimeFactors(normalHistogram, threadCount, range));
+            Benchmark.Mark7(String.format("countPrimeFactorStripe %2d", locks), i -> countPrimeFactorsStrip(stripHistogram, threadCount, range));
             
         }
 

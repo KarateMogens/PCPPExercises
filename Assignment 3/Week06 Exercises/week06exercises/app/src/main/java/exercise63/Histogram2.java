@@ -3,7 +3,7 @@ package exercise63;
 class Histogram2 implements Histogram {
 
     private final int[] counts;
-    private volatile int total; //Should it be volatile or not?
+    private int total;
 
     public Histogram2(int span) {
         this.counts = new int[span];

@@ -144,13 +144,13 @@ public class TestCountPrimesThreads {
 			final int from = perThread * t;
 			final int to = (t + 1 == threadCount) ? range : perThread * (t + 1);
 			myFutures[t] = pool.submit(() -> {
-				long result = 0;
+				long partialResult = 0;
 				for (int i = from; i < to; i++) {
 					if (isPrime(i)) {
-						result++;
+						partialResult++;
 					}
 				}
-				return result;
+				return partialResult;
 			});
 		}
 		long result = 0;
