@@ -178,7 +178,7 @@ Use the code in file `TestCountPrimesThreads.java` (in the exercises directory f
 #### Answer:
 
 > The execution time for the method countParallelNLocal is consistenly slightly faster than countParallelN (by about 5%). `CountParallelN` uses a shared, synchronized datastructure (`AtomicLong`) to store intermediate values. This also means that the `AtomicLong` will block threads from updating the variable at the same time, thus slowing down the program. `CountParallelNLocal` instead uses a datastructure that does not exclude threads from updating the values at the same time, thus avoiding interleavings where threads slow each other down.
-> We see the execution time for both methods converge around 8-threads, before the execution times start increasing again. We assume that the performance drops because the work to be carried out becomes too sub-divided, meaning that the overhead of starting up a thread or submitting a task to the threadpool, becomes too large relative to the work to be carried out.
+> We see the execution time for both methods converge around 8-threads, before the execution times start increasing again. ??We assume that the performance drops because the work to be carried out becomes too sub-divided, meaning that the overhead of starting up a thread or submitting a task to the threadpool, becomes too large relative to the work to be carried out.??
 
 2. Rewrite `TestCountPrimesthreads.java` using Futures for the tasks of each of the threads in part 1. Run your solutions and report results. How do they compare with the results from the version using threads?
 
@@ -350,16 +350,16 @@ Method call `increment(7)` will add one to bin 7; method call `getCount(7)` will
 There is a non-thread-safe implementation of `Histogram1` in file `SimpleHistogram.java`. You may assume that the dump method given there is called only when no other thread manipulates the histogram and therefore does not require locking, and that the span is fixed (immutable) for any given Histogram object.
 
 1. Make a thread-safe implementation, class `Histogram2` implementing the interface `Histogram`. Use suitable modifiers (final and synchronized) in a copy of the Histogram1 class. This class must use at most one lock to ensure mutual exclusion.
-Explain what fields and methods need modifiers and why. Does the getSpan method need to be synchro- nized?
+Explain what fields and methods need modifiers and why. Does the getSpan method need to be synchronized?
 
 #### Answer:
-> 
+> No the getSpan does not need to be synchronized, because the array `count` is initialized in the constructor, and is final meaning that the reference to it does not change after being initialized. 
 
 2. Now create a new class, `Histogram3` (implementing the Histogram interface) that uses lock striping. You can start with a copy of `Histogram2`. Then, the constructor of `Histogram3` must take an additional parameter `nrLocks` which indicates the number of locks that the histogram uses. You will have to associate a lock to each bin. Note that, if the number of locks is less than the number of bins, you may use the same lock for more than one bin. Try to distribute locks evenly among bins; consider the modulo operation % for this task.
 
 
 #### Answer:
->
+> See code: `Histogram3.java`
 
 3. Now consider again counting the number of prime factors in a number p. Use the `Histogram2` class to write a program with multiple threads that counts how many numbers in the range 0. . . 4 999 999 have 0 prime factors, how many have 1 prime factor, how many have 2 prime factors, and so on. You may draw inspiration from the `TestCountPrimesThreads.java`.
 
