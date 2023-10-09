@@ -58,7 +58,7 @@ Run the program with both versions of the code shown above and explain the resul
 ---
 
 
-3. Change the program in ThreadsAccountExperimentsMany.java to use a the executor framework instead of raw threads. Make it use a ForkJoin thread pool. For now do not worry about terminating the main thread, but insert a print statement in the doTransaction method, so you can see that all executors are active.
+3. Change the program in `ThreadsAccountExperimentsMany.java` to use a the executor framework instead of raw threads. Make it use a `ForkJoin` thread pool. For now do not worry about terminating the main thread, but insert a print statement in the `doTransaction` method, so you can see that all executors are active.
 
 #### Answer:
 
@@ -88,6 +88,8 @@ Run the program with both versions of the code shown above and explain the resul
         }
 
         pool.shutdown();
+
+        }
 
 4. Ensure that the executor shuts down after all tasks has been executed. Hint: See slides for suggestions on how to wait until all tasks are finished.
 
@@ -173,14 +175,153 @@ Use the code in file `TestCountPrimesThreads.java` (in the exercises directory f
         countParallelN 32               1430483,7 ns   35990,33        256
         countParallelNLocal 32          1407647,5 ns   10942,60        256
 
+#### Answer:
+
+> The execution time for the method countParallelNLocal is consistenly slightly faster than countParallelN (by about 5%). `CountParallelN` uses a shared, synchronized datastructure (`AtomicLong`) to store intermediate values. This also means that the `AtomicLong` will block threads from updating the variable at the same time, thus slowing down the program. `CountParallelNLocal` instead uses a datastructure that does not exclude threads from updating the values at the same time, thus avoiding interleavings where threads slow each other down.
+> We see the execution time for both methods converge around 8-threads, before the execution times start increasing again. We assume that the performance drops because the work to be carried out becomes too sub-divided, meaning that the overhead of starting up a thread or submitting a task to the threadpool, becomes too large relative to the work to be carried out.
+
 2. Rewrite `TestCountPrimesthreads.java` using Futures for the tasks of each of the threads in part 1. Run your solutions and report results. How do they compare with the results from the version using threads?
+
+countSequential                 2657251,9 ns    5762,41        128
+countParallelN  1               2734148,6 ns    7918,85        128
+countParallelNLocal  1          2705608,7 ns    5461,28        128
+countPoolN  1                   2749803,2 ns   56788,29        128
+countPoollNLocal  1             2725307,3 ns    8648,93        128
+countParallelN  2               1741908,4 ns    5693,96        256
+countParallelNLocal  2          1744840,5 ns    4351,03        256
+countPoolN  2                   1765988,2 ns    4900,49        256
+countPoollNLocal  2             1760950,6 ns    8228,54        256
+countParallelN  3               1304276,9 ns    3174,14        256
+countParallelNLocal  3          1294779,1 ns    9989,86        256
+countPoolN  3                   1343901,0 ns   10173,78        256
+countPoollNLocal  3             1330535,4 ns    1221,17        256
+countParallelN  4               1071959,3 ns    1147,62        256
+countParallelNLocal  4          1062731,7 ns    9562,54        256
+countPoolN  4                   1147898,6 ns   30479,64        256
+countPoollNLocal  4             1135602,2 ns   24525,04        256
+countParallelN  5               1093025,3 ns   25265,17        256
+countParallelNLocal  5          1044002,4 ns   23306,74        256
+countPoolN  5                   1182108,5 ns   51677,70        256
+countPoollNLocal  5             1069537,4 ns    6029,95        256
+countParallelN  6               1049195,7 ns    4215,31        256
+countParallelNLocal  6           999685,0 ns    5745,27        256
+countPoolN  6                   1190947,5 ns   31618,45        256
+countPoollNLocal  6             1117278,1 ns   22177,21        256
+countParallelN  7               1302600,7 ns  439149,53        256
+countParallelNLocal  7           982497,3 ns   16866,38        512
+countPoolN  7                   1165626,2 ns   19019,46        256
+countPoollNLocal  7             1105390,9 ns   32412,41        256
+countParallelN  8               1007349,2 ns    8008,79        256
+countParallelNLocal  8           970667,8 ns    8334,41        512
+countPoolN  8                   1100943,7 ns    5829,31        256
+countPoollNLocal  8             1047030,7 ns   20727,06        256
+countParallelN  9               1005898,1 ns   22619,05        256
+countParallelNLocal  9           973668,8 ns   19680,85        256
+countPoolN  9                   1084381,7 ns   29087,34        256
+countPoollNLocal  9             1024874,3 ns   25143,40        256
+countParallelN 10               1014133,5 ns   22750,14        256
+countParallelNLocal 10           985228,7 ns    9479,57        512
+countPoolN 10                   1097397,5 ns   22459,75        256
+countPoollNLocal 10             1022976,9 ns   22489,26        256
+countParallelN 11               1011385,4 ns   25656,55        256
+countParallelNLocal 11           986153,8 ns   21378,86        256
+countPoolN 11                   1092871,3 ns   23880,98        256
+countPoollNLocal 11             1013779,7 ns    5534,71        256
+countParallelN 12               1010504,8 ns   15877,28        256
+countParallelNLocal 12           980918,3 ns   11005,71        256
+countPoolN 12                   1070624,4 ns    6281,46        256
+countPoollNLocal 12             1006139,8 ns   19319,79        256
+countParallelN 13               1033118,3 ns   29280,35        256
+countParallelNLocal 13           984085,7 ns    7450,89        256
+countPoolN 13                   1056182,7 ns    9331,90        256
+countPoollNLocal 13              980604,9 ns   13345,25        512
+countParallelN 14               1024976,7 ns    2941,95        256
+countParallelNLocal 14          1011687,6 ns   31619,02        256
+countPoolN 14                   1052957,5 ns   26902,81        256
+countPoollNLocal 14              974426,4 ns   32337,56        256
+countParallelN 15               1070347,3 ns   33983,73        256
+countParallelNLocal 15          1046592,4 ns   23529,96        256
+countPoolN 15                   1046905,3 ns   29007,97        256
+countPoollNLocal 15              958711,2 ns   19507,63        512
+countParallelN 16               1086328,9 ns   32556,82        256
+countParallelNLocal 16          1052847,4 ns   35780,39        256
+countPoolN 16                   1045275,6 ns   21528,86        256
+countPoollNLocal 16              963886,7 ns   33983,63        256
+countParallelN 17               1114513,5 ns   49967,08        256
+countParallelNLocal 17          1100516,5 ns   55656,34        256
+countPoolN 17                   1196207,9 ns  219969,13        256
+countPoollNLocal 17              963757,3 ns   18993,16        512
+countParallelN 18               1109875,0 ns    6923,02        256
+countParallelNLocal 18          1106920,5 ns   41563,98        256
+countPoolN 18                   1050633,1 ns   32701,17        256
+countPoollNLocal 18              962532,4 ns   16009,51        512
+countParallelN 19               1144618,3 ns   37121,20        256
+countParallelNLocal 19          1113909,8 ns   35520,18        256
+countPoolN 19                   1056174,5 ns   30788,18        256
+countPoollNLocal 19              985039,5 ns   44553,23        256
+countParallelN 20               1213133,3 ns   87611,07        256
+countParallelNLocal 20          1172589,0 ns   73939,24        256
+countPoolN 20                   1040545,5 ns    8414,33        256
+countPoollNLocal 20              952022,4 ns   20574,60        512
+countParallelN 21               1201539,0 ns   35592,09        256
+countParallelNLocal 21          1198400,4 ns   90473,43        256
+countPoolN 21                   1056863,3 ns   36149,24        256
+countPoollNLocal 21              964415,3 ns   38337,54        512
+countParallelN 22               1198041,1 ns   22851,41        256
+countParallelNLocal 22          1175563,9 ns    9122,93        256
+countPoolN 22                   1052430,0 ns   16189,11        256
+countPoollNLocal 22              954384,4 ns   18256,62        512
+countParallelN 23               1226773,6 ns   35347,54        256
+countParallelNLocal 23          1203903,5 ns   32907,72        256
+countPoolN 23                   1067805,6 ns   30674,28        256
+countPoollNLocal 23             1004732,2 ns   42781,50        256
+countParallelN 24               1232474,2 ns    8513,64        256
+countParallelNLocal 24          1206048,4 ns    6726,03        256
+countPoolN 24                   1061848,8 ns    3572,69        256
+countPoollNLocal 24              958268,4 ns   17039,66        512
+countParallelN 25               1267541,5 ns   41163,50        256
+countParallelNLocal 25          1255453,5 ns   36110,81        256
+countPoolN 25                   1051630,2 ns    9072,35        256
+countPoollNLocal 25              964160,9 ns   14826,16        512
+countParallelN 26               1321417,2 ns   88293,59        256
+countParallelNLocal 26          1279793,5 ns   35532,33        256
+countPoolN 26                   1062830,2 ns   25374,04        256
+countPoollNLocal 26             1027921,9 ns  116852,77        512
+countParallelN 27               1339013,9 ns   42206,72        256
+countParallelNLocal 27          1300909,7 ns   34897,90        256
+countPoolN 27                   1058535,7 ns   31395,27        256
+countPoollNLocal 27             1004169,0 ns   32289,55        256
+countParallelN 28               1364234,8 ns   54661,78        256
+countParallelNLocal 28          1310863,2 ns   10955,37        256
+countPoolN 28                   1119491,8 ns   50210,91        256
+countPoollNLocal 28              967032,7 ns   20354,65        256
+countParallelN 29               1367615,3 ns   46344,81        256
+countParallelNLocal 29          1339252,8 ns   12555,91        256
+countPoolN 29                   1055898,2 ns    9095,55        256
+countPoollNLocal 29              964098,8 ns   23686,44        512
+countParallelN 30               1403977,9 ns   50440,42        256
+countParallelNLocal 30          1371445,1 ns   38265,69        256
+countPoolN 30                   1054550,1 ns    6266,31        256
+countPoollNLocal 30              959998,7 ns   14584,12        512
+countParallelN 31               1401890,7 ns   37804,91        256
+countParallelNLocal 31          1393705,8 ns   31300,76        256
+countPoolN 31                   1052780,3 ns    7828,81        256
+countPoollNLocal 31              963609,9 ns   16915,45        512
+countParallelN 32               1431400,9 ns   41151,21        256
+countParallelNLocal 32          1416982,6 ns   28284,29        256
+countPoolN 32                   1055673,5 ns   10346,46        256
+countPoollNLocal 32              954994,5 ns   14920,24        512
+
+#### Answer:
+
+> As of right now, the programs using pools are slower than the programs using raw threads until around a threadcount of around 12/13. 
 
 
 3. Change the program in ThreadsAccountExperimentsMany.java to use a the executor framework instead of raw threads. Make it use a ForkJoin thread pool. For now do not worry about terminating the main thread, but insert a print statement in the doTransaction method, so you can see that all executors are active.
 
 #### Answer:
 
-> See code: `TestCountPrimesThreads.java`
+> See code: `ThreadsAccountExperimentsMany.java`
 
 4. Ensure that the executor shuts down after all tasks has been executed. 
 
@@ -188,7 +329,7 @@ Use the code in file `TestCountPrimesThreads.java` (in the exercises directory f
 
 #### Answer:
 
-> See code: `TestCountPrimesThreads.java`
+> See code: `ThreadsAccountExperimentsMany.java`
 
 ---
 
