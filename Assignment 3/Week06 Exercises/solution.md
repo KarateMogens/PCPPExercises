@@ -314,7 +314,8 @@ Use the code in file `TestCountPrimesThreads.java` (in the exercises directory f
 
 #### Answer:
 
-> As of right now, the programs using pools are slower than the programs using raw threads until around a threadcount of around 12/13. We are unsure of why that is, as it goes against what we could expect from the results presented during the lecture. We have tried to test the same code on different CPU architectures, but the results remain the same.
+> With a program that simple uses pools, in a similar manner than if they were threads, we see that pools are slower than the programs using raw threads until around a threadcount of around 12/13. We are unsure of why `countPoolNLocal` becomes faster at a higher thread count, as it goes against what we could expect from the results presented during the lecture.
+> It is possible that the structure used in the program is unsuited for the specific executor `ForkJoinPool()`, and that instead a threshold-parameter should be used, with recursive submission of tasks. However, we understood the assignment as having to be implemented with the structure provided.
 
 
 3. Change the program in ThreadsAccountExperimentsMany.java to use a the executor framework instead of raw threads. Make it use a ForkJoin thread pool. For now do not worry about terminating the main thread, but insert a print statement in the doTransaction method, so you can see that all executors are active.
@@ -450,5 +451,6 @@ Explain what fields and methods need modifiers and why. Does the getSpan method 
 #### Answer:
 
 > See code: `BenchmarkHistogram.java` for implementation.
-> 
+> Our implementation of Histogram3 shows significant performance improvement compared to Histogram2 that does not use lock striping. This trend becomes more pronounced as the number of threads increases, showing that the lock-striping does indeed prevent saturation loss from multiple threads blocking each other, by trying to carry out similar tasks (updating the histogram).
 > With our amount of threads locked to 10 and increasing the number of locks on the histogram for each iteration, we see that we gain a maximum performance after around 5 locks with no improvement after this point. Already at 5 locks, there is a relatively high chance that two threads are not trying to increment the same bucket at the same time. Therefore we see diminishing to no returns after this point.
+

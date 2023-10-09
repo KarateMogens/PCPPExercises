@@ -28,7 +28,6 @@ class Histogram3 implements Histogram {
         }
 
     public int getCount(int bin) {
-        // not sure how to lock on this, if needed
         return counts[bin];
     }
 
