@@ -53,7 +53,7 @@ public class TestHistograms {
 
     @RepeatedTest(100)
     @ParameterizedTest
-    @ValueSource(ints = {1,2,3,4})
+    @ValueSource(ints = {0,1,2,3,4})
     public void testCasHistogramEqualsHistogram1CountPrimesTask(int threads) {
 
         int threadCount = (int) Math.pow(2, threads);
