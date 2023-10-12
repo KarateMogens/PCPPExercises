@@ -1,17 +1,24 @@
-// For week 7
-// raup@itu.dk * 10/10/2021
+// // For week 7
+// // raup@itu.dk * 10/10/2021
 
-package exercises07;
+// package exercises07;
 
-// Very likely you will need some imports here
+// // The solution is made with help from TAs to start out. 
+
+import java.util.concurrent.atomic.AtomicReference;
 
 class ReadWriteCASLock implements SimpleRWTryLockInterface {
-
-    // TODO: Add necessary field(s) for the class
+private final AtomicReference<Holders> holder = new AtomicReference<Holders>();
 
     public boolean readerTryLock() {
-		// TODO 7.2.3
-		return true;
+		  Thread current = Thread.currentThread();
+      Holders h = holder.get();
+      while (h == null || h instanceof ReaderList) {
+        ReaderList newRL = new ReaderList(current, (ReaderList)h);
+        if (holder.compareAndSet(h, newRL)) return true;
+        else h = holder.get(); // if failling look up h again. 
+      }
+      return false; // If a writer is in the holder.
     }
     
     public void readerUnlock() {
@@ -19,14 +26,15 @@ class ReadWriteCASLock implements SimpleRWTryLockInterface {
     }
     
     public boolean writerTryLock() {
-		// TODO 7.2.1
-		return true;
+		Thread current = Thread.currentThread();
+		return holder.compareAndSet(null, new Writer(current));
     }
 
     public void writerUnlock() {
-		// TODO 7.2.2
+      Thread currentT = Thread.currentThread();
+      Holders h = holder.get(); 
+      if (h instanceof Writer && (Writer)h.thread == currentT){holder.compareAndSet(h, null);}
     }
-
 
     // Challenging 7.2.7: You may add new methods
 
@@ -39,17 +47,32 @@ class ReadWriteCASLock implements SimpleRWTryLockInterface {
 		private final Thread thread;
 		private final ReaderList next;
 
-		// TODO: Constructor
+        public ReaderList(Thread thread, ReaderList rest){
+            this.thread = thread; 
+            this.next = rest;
+        }
+		
+        public boolean contains(Thread t){
+            if (this.thread == t){return true;}
+            else if (this.next == null) {return false;}
+            return next.contains(t);
+        }
 
-		// TODO: contains
-
-		// TODO: remove
+        public ReaderList remove(Thread t){
+            if(this.thread == t){  
+                ReaderList newList = next;
+                this.next = null; return newList;}
+            else if (this.next == null){
+                throw new Exception(); // evt returnere this
+            } return new ReaderList(this.thread, next.remove(t));
+        }
     }
 
     private static class Writer extends Holders {
 		public final Thread thread;
 
-		// TODO: Constructor
-	
+		public Writer (Thread t){
+            this.thread = t;
+        }
     }
 }
