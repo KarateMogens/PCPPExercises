@@ -3,7 +3,7 @@
 
 // package exercises07;
 
-// // Very likely you will need some imports here
+// // Got help from TA, otcl, to start out and establish the concepts. 
 
 import java.util.concurrent.atomic.AtomicReference;
 
