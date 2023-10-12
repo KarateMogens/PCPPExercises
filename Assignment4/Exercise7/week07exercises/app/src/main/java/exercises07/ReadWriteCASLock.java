@@ -3,7 +3,7 @@
 
 // package exercises07;
 
-// // The solution is made with help from TAs to start out. 
+// // Very likely you will need some imports here
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -22,7 +22,17 @@ private final AtomicReference<Holders> holder = new AtomicReference<Holders>();
     }
     
     public void readerUnlock() {
-		// TODO 7.2.4
+      Thread current = Thread.currentThread();
+      Holders h = holder.get();
+      while (h != null && h instanceof ReaderList) {
+        ReaderList rl = (ReaderList) h;
+        if (rl.contains(current)) {
+          holder.compareAndSet(h, rl.remove(current));
+          return;
+        }
+        h = holder.get();
+      }
+      throw new Exception();
     }
     
     public boolean writerTryLock() {
@@ -33,13 +43,9 @@ private final AtomicReference<Holders> holder = new AtomicReference<Holders>();
     public void writerUnlock() {
       Thread currentT = Thread.currentThread();
       Holders h = holder.get(); 
-      if (h instanceof Writer && (Writer)h.thread == currentT){holder.compareAndSet(h, null);}
+      if (h instanceof Writer && ((Writer)h).thread == currentT){holder.compareAndSet(h, null);}
+      else throw new Exception();
     }
-
-    // Challenging 7.2.7: You may add new methods
-
-
-
 
     private static abstract class Holders { }
 
