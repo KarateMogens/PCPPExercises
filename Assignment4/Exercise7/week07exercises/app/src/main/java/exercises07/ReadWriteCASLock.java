@@ -1,9 +1,7 @@
 // // For week 7
 // // raup@itu.dk * 10/10/2021
-
-// package exercises07;
-
 // // Got help from TA, otcl, to start out and establish the concepts. 
+package exercises07;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,7 +30,7 @@ private final AtomicReference<Holders> holder = new AtomicReference<Holders>();
         }
         h = holder.get();
       }
-      throw new Exception();
+      throw new RuntimeException();
     }
     
     public boolean writerTryLock() {
@@ -43,8 +41,8 @@ private final AtomicReference<Holders> holder = new AtomicReference<Holders>();
     public void writerUnlock() {
       Thread currentT = Thread.currentThread();
       Holders h = holder.get(); 
-      if (h instanceof Writer && ((Writer)h).thread == currentT){holder.compareAndSet(h, null);}
-      else throw new Exception();
+      if (h instanceof Writer && ((Writer)h).thread == currentT){holder.compareAndSet(h, null);} //would not be able to unlock, if it wasn't the same thread holding the 'lock'. So maybe a little over done. 
+      else throw new RuntimeException();
     }
 
     private static abstract class Holders { }
@@ -67,9 +65,10 @@ private final AtomicReference<Holders> holder = new AtomicReference<Holders>();
         public ReaderList remove(Thread t){
             if(this.thread == t){  
                 ReaderList newList = next;
-                this.next = null; return newList;}
+                //this.next = null; //to throw it to the garbage collector? When no reference, will it then collect it? 
+                return newList;}
             else if (this.next == null){
-                throw new Exception(); // evt returnere this
+                throw new RuntimeException(); 
             } return new ReaderList(this.thread, next.remove(t));
         }
     }
