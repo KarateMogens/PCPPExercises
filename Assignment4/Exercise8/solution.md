@@ -113,7 +113,7 @@ In this exercise, we look into the Treiber Stack. Your task is to reason about i
 >
 >**Push-method**: 
 >- `Push()` Has one lineriaztion point `pu3` - if succesfully executed, the element is pushed to the stack.
->- Take two threads; t1 and t2. If t1 and t2 both call `push()` on the stack to push a new item to the top of the stack, only one of the two threads will be successful, due to the atomic nature of `top.compareAndSet()` in 'pu3'. The unsuccesfull thread will then fetch the new value for top and try again.
+>- Take two threads; t1 and t2. If t1 and t2 both call `push()` on the stack to push a new item to the top of the stack, only one of the two threads will be successful, due to the atomic nature of `top.compareAndSet()` in `pu3`. The unsuccesfull thread will then fetch the new value for top and try again.
 >- Take two threads; t1 and t2. If t1 calls push after t2 has succesfully called `push()`, t1 will simply change top to point to the item added by t2.
 
 >**Pop-method**: 
@@ -121,7 +121,7 @@ In this exercise, we look into the Treiber Stack. Your task is to reason about i
 >- `po1` - If the stack is empty the oldhead will become `null`. `po2` and `po3` will then be executed and return null. 
 >- `po4` - If succesfully executed, the element is poped from the stack.
 >- Take two threads t1 and t2. If both t1 and t2 call `pop()` at the same time on a non-empty stack (with at least two items), only one of the two threads will be able to set `top` to `top.next` due to the atomic nature of `top.compareAndSet()`. The failing thread wil fetch the new node `top` and try again.
->- If t1 and t2 call `pop()` on a stack with exactly 1 item left, only one of the two will update `top` to `null` and return the item. The second thread will fail and retry the `pop(). Doing so it will fetch the new value for `top` and fail in `po2` and return `null`.
+>- If t1 and t2 call `pop()` on a stack with exactly 1 item left, only one of the two will update `top` to `null` and return the item. The second thread will fail and retry the `pop()`. Doing so it will fetch the new value for `top` and fail in `po2` and return `null`.
 >- If t1 calls `push()` and t2 calls `pop()` at the same time several things can happen. If t1 is initially succesfull in calling `push()`, `top` will be updated to the newly pushed value and t2 will fail on `po5` and immediate try again, fetching the updated value for `top`. 
 >- On the other hand, if t2 is initially succesfull, `top` will be updated to `top.next` and t1 will fail on `pu3` and immediately try again, fetching the updated value for `top` and succesfully push the new item.
 
