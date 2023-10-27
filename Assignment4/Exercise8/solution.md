@@ -38,7 +38,7 @@ The execution is sequentially consistent. Consider the execution:
         B: ---|q.deq(x)|------------------------->
 
 >Answer:
-> NO! Because we cannot have a combination of linerialization points where q.deq(x) happens after q.enq(x). Therefore, there is no possible execution does not satisfy the specification of the object (FIFO).
+> NO! Because we cannot have a combination of linerialization points where q.deq(x) happens after q.enq(x). Therefore, there is no possible execution that satisfies the specification of the object (FIFO).
 
 
 3. Is this execution linearizable? If so, provide a linearization that satisfies the standard specification of a sequential FIFO queue. Otherwise, explain why it is not linearizable.
@@ -60,7 +60,7 @@ The execution is sequentially consistent. Consider the execution:
 
 >Answer:
 >
->No, the execution is not linearizable. It is not possible to execute, without violating the specification of the FIFO. The 'x' first enqueued should be dequeued first before the 'y' can be dequeued. No matter where the linearization point for the `q.deq(y)` is placed according to everything happening in A it will violate the specification of the FIFO. 
+>No, the execution is not linearizable. It is not possible to execute, without violating the specification of the FIFO. The 'x' that is first enqueued should be dequeued before the 'y' can be dequeued. No matter where the linearization point, for the `q.deq(y)`, is placed according to everything happening in A, it will violate the specification of the FIFO. 
 >
 
 **Challenging**
@@ -112,10 +112,14 @@ In this exercise, we look into the Treiber Stack. Your task is to reason about i
             }
 >
 >**Push-method**: 
+>- Push() Has one lineriaztion point `pu3` - if succesfully executed, the element is pushed to the stack.
 >- Take two threads; t1 and t2. If t1 and t2 both call `push()` on the stack to push a new item to the top of the stack, only one of the two threads will be successful, due to the atomic nature of `top.compareAndSet()` in 'pu3'. The unsuccesfull thread will then fetch the new value for top and try again.
 >- Take two threads; t1 and t2. If t1 calls push after t2 has succesfully called `push()`, t1 will simply change top to point to the item added by t2.
 
 >**Pop-method**: 
+>- Pop() has two linerization points. po1 and po4. 
+	 >- po1 - if the stack is empty the oldhead will become 'null'. Pop2 will then be executed and return null. 
+	 >- po4 - If succesfully executed, the element har been poped.
 >- Take two threads t1 and t2. If both t1 and t2 call `pop()` at the same time on a non-empty stack (with at least two items), only one of the two threads will be able to set `top` to `top.next` due to the atomic nature of `top.compareAndSet()`. The failing thread wil fetch the new node `top` and try again.
 >- If t1 and t2 call `pop()` on a stack with exactly 1 item left, only one of the two will update 'top' to 'null' and return the item. The second thread will fail and retry the 'pop()'. Doing so it will fetch the new value for top and fail in `po2` and return `null` after failing on `po2`.
 >- If t1 calls `push()` and t2 calls `pop()` at the same time several things can happen. If t1 is initially succesfull in calling `push()`, `top` will be updated to the newly pushed value and t2 will fail on `po5` and immediate try again, fetching the updated value for `top`. 
