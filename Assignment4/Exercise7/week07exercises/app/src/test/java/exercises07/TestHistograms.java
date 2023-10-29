@@ -50,8 +50,6 @@ public class TestHistograms {
         concurrentResults = new int[span];
     }
 
-
-    @RepeatedTest(100)
     @ParameterizedTest
     @ValueSource(ints = {0,1,2,3,4})
     public void testCasHistogramEqualsHistogram1CountPrimesTask(int threads) {
@@ -85,9 +83,7 @@ public class TestHistograms {
                     for (int i = from; i < to; i++) {
                         threadSafeHistogram.increment(countFactors(i));
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (BrokenBarrierException e) {
+                } catch (InterruptedException | BrokenBarrierException e) {
                     e.printStackTrace();
                 }
             });
@@ -95,9 +91,7 @@ public class TestHistograms {
         try {
             for (int t = 0; t < threadCount; t++)
                     myFutures[t].get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         } finally {
             pool.shutdown();

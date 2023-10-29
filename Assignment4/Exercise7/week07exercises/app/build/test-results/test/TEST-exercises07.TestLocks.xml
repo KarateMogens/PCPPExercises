@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="exercises07.TestLocks" tests="9" skipped="0" failures="0" errors="0" timestamp="2023-10-29T22:21:44" hostname="AirtilhndeMalte" time="0.045">
+  <properties/>
+  <testcase name="readUnlockWithoutLock()" classname="exercises07.TestLocks" time="0.006"/>
+  <testcase name="writeUnlockWithoutLock()" classname="exercises07.TestLocks" time="0.002"/>
+  <testcase name="[1] 1" classname="exercises07.TestLocks" time="0.012"/>
+  <testcase name="[2] 2" classname="exercises07.TestLocks" time="0.001"/>
+  <testcase name="[3] 3" classname="exercises07.TestLocks" time="0.001"/>
+  <testcase name="[4] 4" classname="exercises07.TestLocks" time="0.002"/>
+  <testcase name="[5] 5" classname="exercises07.TestLocks" time="0.002"/>
+  <testcase name="writeReadExclusivity()" classname="exercises07.TestLocks" time="0.0"/>
+  <testcase name="readWriteExclusivity()" classname="exercises07.TestLocks" time="0.0"/>
+  <system-out><![CDATA[1
+1
+1
+1
+1
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
