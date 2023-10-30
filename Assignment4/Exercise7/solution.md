@@ -199,7 +199,7 @@ You may write other tests to increase your confidence that your lock implementat
 > #### Answer:
 >See code `TestLocks.java`
 >
->Run with Run with `gradle cleanTest test --tests exercises07.TestLocks`
+>Run with `gradle cleanTest test --tests exercises07.TestLocks`
 
 6. Finally, write a parallel functional correctness test that checks that two writers cannot acquire the lock at the same time. You must use JUnit 5 and the techniques we covered in week 4. Note that for this exercise
 readers are irrelevant. Intuitively, the test should create two or more writer threads that acquire and release the lock. You should instrument the test to check whether there were 2 or more threads holding the lock at the same time. This check must be performed when all threads finished their execution. This test should be performed with enough threads so that race conditions may occur (if the lock has bugs).
