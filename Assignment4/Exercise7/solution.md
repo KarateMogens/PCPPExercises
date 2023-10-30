@@ -22,6 +22,9 @@ mentation, and report any immutable variables.
 
 > #### Answer:
 > See code: `CasHistogram.java`
+>
+> The class state does not escape, because the only shared state variable is `counts` is declared as `private` and therefore cannot be accessed directly and manipulated by any other classes. Furthermore, throughout the class methods, we only ever return the values stored in each AtomicInteger of `counts` rather than the AtomicIntegers themselves. Therefore these cannot be modified by other classes either.
+> The class ensures safe publication, because the only class field `counts` is declared as `final`. It is therefore not published to any other classes until the construction is finalized and the object is flushed to shared memory.
 
 
 2. Write a parallel functional correctness test for CasHistogram to check that it correctly stores the number
