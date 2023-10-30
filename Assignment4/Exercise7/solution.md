@@ -108,7 +108,7 @@ method for the same reason as we mentioned above. Simply implement a lock-based 
 
 ## Exercise 7.2
 
-Recall read-write locks, in the style of Java’s `java.util.concurrent.locks.ReentrantReadWriteLock``.
+Recall read-write locks, in the style of Java’s `java.util.concurrent.locks.ReentrantReadWriteLock`.
 As we discussed, this type of lock can be held either by any number of readers, or by a single writer.
 In this exercise you must implement a simple read-write lock class SimpleRWTryLock that is not reentrant and that does not block. It should implement the following interface:
 
