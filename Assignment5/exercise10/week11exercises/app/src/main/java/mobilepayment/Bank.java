@@ -7,12 +7,9 @@ import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.*;
 
-
 import mobilepayment.Account.AccountCommand;
 import mobilepayment.Account.UpdateBalance;
 import mobilepayment.Account;
-
-
 
 public class Bank extends AbstractBehavior<Bank.BankCommand> {
 
@@ -49,7 +46,7 @@ public class Bank extends AbstractBehavior<Bank.BankCommand> {
     public static final class AddAccount implements BankCommand {
 
         private final ActorRef<Account.AccountCommand> account;
-        
+
         public AddAccount(ActorRef<Account.AccountCommand> account) {
             this.account = account;
         }
@@ -92,19 +89,21 @@ public class Bank extends AbstractBehavior<Bank.BankCommand> {
     private Behavior<BankCommand> onAddAccount(AddAccount message) {
         ActorRef<Account.AccountCommand> actorRef = message.getAccount();
         this.accountActors.put(actorRef.path().name(), actorRef);
-        getContext().getLog().info("Added account: " + actorRef.path().name() + " to bank: " + getContext().getSelf().path().name(), getContext().getSelf().path().name());
+        getContext().getLog().info(
+                "Added account: " + actorRef.path().name() + " to bank: " + getContext().getSelf().path().name(),
+                getContext().getSelf().path().name());
         return this;
     }
 
     private Behavior<BankCommand> onTransaction(Transaction message) {
         ActorRef<Account.AccountCommand> from = accountActors.get(message.getFrom());
         ActorRef<Account.AccountCommand> to = accountActors.get(message.getTo());
-        
+
         double value = message.getValue();
         from.tell(new Account.UpdateBalance(-value));
         to.tell(new Account.UpdateBalance(value));
-        
+
         return this;
     }
-  
+
 }
