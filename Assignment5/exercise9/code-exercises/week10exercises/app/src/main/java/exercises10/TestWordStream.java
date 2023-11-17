@@ -19,31 +19,48 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import benchmarking.Benchmark;
+
 public class TestWordStream {
   public static void main(String[] args) {
     String filename = "src/main/resources/english-words.txt";
     String websiteURL = "https://staunstrups.dk/jst/english-words.txt";
     System.out.println(readWords(filename).count());
+
     // 10.2.2
     System.out.println("10.2.2:");
+    System.out.println("--------------------------------");
     readWords(filename).limit(100).forEach(System.out::println);
+
     // 10.2.3
     System.out.println("10.2.3:");
+    System.out.println("--------------------------------");
     readWords(filename).filter(word -> word.length() >= 22).forEach(System.out::println);
+
     // 10.2.4
     System.out.println("10.2.4:");
+    System.out.println("--------------------------------");
     readWords(filename).filter(word -> word.length() >= 22).limit(1).forEach(System.out::println);
+
     // 10.2.5
-    System.out.println("10.2.5");
+    System.out.println("10.2.5:");
+    System.out.println("--------------------------------");
     readWords(filename).filter(word -> isPalindrome(word.toLowerCase())).forEach(System.out::println);
+
     // 10.2.6
-    System.out.println("10.2.6");
-    readWords(filename).parallel().filter(word -> isPalindrome(word.toLowerCase())).forEach(System.out::println);
+    System.out.println("10.2.6:");
+    System.out.println("--------------------------------");
+    Benchmark.Mark7("Parallel Palindrome-checker", i -> readWords(filename).parallel().filter(word -> isPalindrome(word.toLowerCase())).count());
+    Benchmark.Mark7("Sequential Palindrome-checker", i -> readWords(filename).filter(word -> isPalindrome(word.toLowerCase())).count());
+
     // 10.2.7
-    System.out.println("10.2.7");
+    System.out.println("10.2.7:");
+    System.out.println("--------------------------------");
     System.out.println(readWordsFromURL(websiteURL).count());
+
     //10.2.8
-    System.out.println("10.2.8");
+    System.out.println("10.2.8:");
+    System.out.println("--------------------------------");
     int max = readWordsFromURL(websiteURL).mapToInt(word -> word.length()).max().getAsInt();
     int min = readWordsFromURL(websiteURL).mapToInt(word -> word.length()).min().getAsInt();
     double average = readWordsFromURL(websiteURL).mapToInt(word -> word.length()).average().getAsDouble();

@@ -91,7 +91,10 @@ print them.
 >
 > See code: `TestWordStream.java`
 >
-> ## UNANSWERED QUESTION
+> **Results:**
+>
+>               Parallel Palindrome-checker      11445339,1 ns   57870,31         32
+>               Sequential Palindrome-checker      15071367,3 ns  164585,20         32
 
 7. Make a new version of the method `readWordStream` which can fetch the list of words from the internet There is a (slightly modiﬁed) version of the word list at this URL: https://staunstrups.dk/jst/english-words.txt. Use this version of `readWordStream` to count the number of words (similarly to question 7.2.1). Note, the number of words is not the same in the two ﬁles !!
 
@@ -181,6 +184,60 @@ week10). Start by reading this.
         15 ForkJoinPool.commonPool-worker-7
 
 3. Change the example by adding a time consuming task (e.g. counting primes in a limited range or the example in the artcle). Report what you see when running the example.
+
+>**Answer:**
+>
+> See code: `Java8ParallelStreamMain.java`
+>
+> We've observed that the workload is more evenly distributed amongst the working threads. In the example before, we for example see thread 7 finishing 4 tasks in a row, before any other task is done. With a more time-consuming task, the work is spread more evenly.
+>
+>
+        =================================
+        Using Sequential Stream
+        =================================
+        0 main           result: 664579
+        1 main           result: 664579
+        2 main           result: 664579
+        3 main           result: 664579
+        4 main           result: 664579
+        5 main           result: 664579
+        6 main           result: 664579
+        7 main           result: 664579
+        8 main           result: 664579
+        9 main           result: 664579
+        10 main          result: 664579
+        11 main          result: 664579
+        12 main          result: 664579
+        13 main          result: 664579
+        14 main          result: 664579
+        15 main          result: 664579
+        16 main          result: 664579
+        17 main          result: 664579
+        18 main          result: 664579
+        19 main          result: 664579
+        =================================
+        Using Parallel Stream
+        =================================
+        17 ForkJoinPool.commonPool-worker-2              result: 664579
+        11 ForkJoinPool.commonPool-worker-4              result: 664579
+        8 ForkJoinPool.commonPool-worker-5               result: 664579
+        12 main          result: 664579
+        2 ForkJoinPool.commonPool-worker-3               result: 664579
+        1 ForkJoinPool.commonPool-worker-6               result: 664579
+        6 ForkJoinPool.commonPool-worker-1               result: 664579
+        7 ForkJoinPool.commonPool-worker-7               result: 664579
+        4 ForkJoinPool.commonPool-worker-3               result: 664579
+        9 ForkJoinPool.commonPool-worker-5               result: 664579
+        10 ForkJoinPool.commonPool-worker-4              result: 664579
+        3 ForkJoinPool.commonPool-worker-7               result: 664579
+        14 main          result: 664579
+        5 ForkJoinPool.commonPool-worker-1               result: 664579
+        19 ForkJoinPool.commonPool-worker-2              result: 664579
+        0 ForkJoinPool.commonPool-worker-6               result: 664579
+        13 ForkJoinPool.commonPool-worker-3              result: 664579
+        16 ForkJoinPool.commonPool-worker-5              result: 664579
+        18 ForkJoinPool.commonPool-worker-4              result: 664579
+        15 ForkJoinPool.commonPool-worker-7              result: 664579
 
 ## Exercise 10.4
 
