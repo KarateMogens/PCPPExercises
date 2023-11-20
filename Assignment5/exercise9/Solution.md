@@ -257,6 +257,7 @@ Consider the pseudo-code below (that does not compile and run). The `source()` p
 >**Answer:**
 >
 > **JavaStream:** The sink function pulls an element from the filter function, which in turn pulls an element from the source-file. The element (a string) is checked against the boolean condition and is either dropped if the length is below 5 or is passed on to sink if it has a length equal to or larger than 5.
+> 
 > **RxJava Statement:** An observable pushes elements to the filter function, which filters out inputs that are shorter than length 5. The filter function then pushes all non-filtered elements onto the sink() function.
 
 2. Describe what happens when this code runs:
@@ -267,4 +268,6 @@ source().filter(w -> w.length() > 10).sink()
 
 >**Answer:**
 >
-> ## Whats the question???
+> **JavaStream:** For the given code to run properly with JavaStream, a new stream would have to be created after each terminal operation. The sink() operation can be seen as terminal. As the pseudo-code is, the stream is reused, and it therefore violates the concepts of JavaStreams, and an 'IllegalStateException' will be thrown. 
+>
+> **RxJava Statement:** In the RxJava the observable can have multiple observers, allowing different terminal operations on the same source.
