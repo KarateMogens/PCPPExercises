@@ -41,11 +41,10 @@ For the pending tasks we also made a queue, but of type Worker.ComputeTask. Comp
 	}
 	
 > 
-> In the constructor we take in the number of min and max workers as parameters, and safe it in the variables in the state. This also means that the number of min and max workers are set in the Guardian. 
-> It is sufficient to have the number of min and max workers as integers, because this way we can always gaureente to have a specific number of workers ready, however we might add more workers if the workload is high. We have not implemented where a worker is removed is the workload is low, but if we did so we could make sure to have the dynamic load balancing mechanism by having a span between the two integers. **I AM NOT SURE ABOUT THIS!!**   
+> In the constructor we take in the number of min and max workers as parameters, and save it in the variables in the state. This also means that the number of min and max workers are initialized when the server is spawned. 
+> It is sufficient to have the number of min and max workers as integers, because this way we can always guarantee to have a specific number of workers ready, however we might add more workers if the workload is high. We have not implemented where a worker is removed if the workload is low, but if we did so we could make sure to have the dynamic load balancing mechanism by having a span between the two integers. 
 > Furthermore we instantiated the three queues as linkedlists.  
 > Finally we looped from 0 up to the number of minWorkers where we for each iteration spawned a new worker and added it to our queue of idle workers. 
-> **SHOULD WE DELETE THE minWorkers FIELD? FROM THE STATE - I DONT THINK THAT WE USE IT**
 
 3. Now we move to handling a list of tasks sent from a client. Write the message handler for messages of type ComputeTasks, which contains the list of tasks sent by the client. For each task in the list, the Server
 must proceed as follows:  
