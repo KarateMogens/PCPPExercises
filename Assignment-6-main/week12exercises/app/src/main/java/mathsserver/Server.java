@@ -107,7 +107,6 @@ public class Server extends AbstractBehavior<Server.ServerCommand> {
 		return this;
 	}
 
-	//new version:
 	public Behavior<ServerCommand> onWorkDone(WorkDone msg) {
 		ActorRef<Worker.WorkerCommand> worker = msg.worker; 
 
@@ -122,19 +121,6 @@ public class Server extends AbstractBehavior<Server.ServerCommand> {
 		return this;
 	}
 
-	//old version: 
-	// public Behavior<ServerCommand> onWorkDone(WorkDone msg) {
-
-	// 	if (pendingTasks.size() > 0) {
-	// 		ComputeTask task = pendingTasks.poll();
-	// 		new Worker.ComputeTask(task.task, task.client);
-	// 	} else {
-	// 		busyWorkers.remove(msg.worker);
-	// 		idleWorkers.add(msg.worker);
-	// 	}
-
-	// 	return this;
-	// }
 
 	public Behavior<ServerCommand> onChildFailed(ChildFailed msg) {
 		ActorRef<Void> crashedChild = msg.getRef();
