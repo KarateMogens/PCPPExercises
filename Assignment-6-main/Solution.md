@@ -133,4 +133,3 @@ Explain how your implementation handles the WorkDone message and addresses these
 > - We then check if the pending tasks queue is not empty, and if this is the case we take a task out of the queue. We then tell the worker to compute the task that we just got out of the queue. 
 > - If there are no pending tasks we remove the worker from the busy worker queue and adds it to the idle workers queue.  
 > We added this to our handler to our message handler like this `.onMessage(WorkDone.class, this::onWorkDone)`  
-> **SEE MY TWO METHODS IN THE CODE, I THINK THAT THE ONE THAT IS NOT COMMENTED OUT IS CORRECT**
